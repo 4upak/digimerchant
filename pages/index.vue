@@ -63,6 +63,10 @@
       <audio ref="audioPlayer">
         <source src="https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-77317/zapsplat_multimedia_button_click_fast_wooden_organic_005_78839.mp3" type="audio/mp3">
       </audio>
+      <audio ref="changeOrder">
+        <source src="https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-84577/zapsplat_multimedia_button_click_bright_003_92100.mp3" type="audio/mp3">
+      </audio>
+
     </div>
   </div>
   <!---->
@@ -106,8 +110,11 @@ export default {
         console.log('new message');
         this.$refs.audioPlayer.play();
       }
-      //var audio = document.getElementById("myAudio");
-      //audio.play();
+      /*else{
+        if(data.message != this.messages){
+          this.$refs.changeOrder.play();
+        }
+      }*/
 
       this.messages=data.message;
 
