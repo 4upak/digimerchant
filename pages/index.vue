@@ -1,20 +1,73 @@
 <template>
-  <v-row justify="center" align="center">
-    <v-list-item v-for="message in messages">
-      <v-list-item-content>
-        <v-list-item-title >{{ message.route.from.name}}: {{message.inAmount }}</v-list-item-title>
-      </v-list-item-content>
-      <v-list-item-content>
-        <v-list-item-title >{{ message.route.to.name}}: {{message.outAmount }}</v-list-item-title>
-      </v-list-item-content>
-      <v-list-item-content>
-        <v-list-item-title >{{ message.status }}</v-list-item-title>
-      </v-list-item-content>
-    </v-list-item>
-  </v-row>
+
+  <div class="orders">
+    <v-card  v-for="message in messages">
+
+      <v-alert
+        type="warning"
+        :title="message.uid"
+        v-if="message.status=='waitPayment'"
+      >
+        {{message.uid}} Ждем оплату
+      </v-alert>
+
+      <v-alert
+        type="info"
+        :title="message.uid"
+        v-if="message.status=='new'"
+      >
+        {{message.uid}} новая
+      </v-alert>
+
+      <v-alert
+        type="error"
+        :title="message.uid"
+        v-if="message.status=='errorPayout'"
+      >
+        {{message.uid}} Ошибка выплаты
+      </v-alert>
+
+      <v-alert
+        type="success"
+        :title="message.uid"
+        v-if="message.status=='inProgress'"
+      >
+        {{message.uid}} Клиент оплатил
+      </v-alert>
+
+      <v-alert
+        type="success"
+        :title="message.uid"
+        v-if="message.status=='inProgressPayout'"
+      >
+        {{message.uid}} На выплате
+      </v-alert>
+
+
+        <v-card-title class="headline">
+          <!--<v-icon><img :src="'https://digichanger.pro/'+message.route.from.image.files[3].url" /></v-icon>-->
+          <img class="route_logo" :src="'https://www.digichanger.pro/service/fs'+message.route.from.image.files[3].url" width="30" />
+          {{ message.route.from.name}} ->
+          <img class="route_logo"  :src="'https://www.digichanger.pro/service/fs'+message.route.to.image.files[3].url" width="30" />
+          {{ message.route.to.name}}
+
+          {{message.status}}
+        </v-card-title>
+      <v-card-text>
+        <div class="status"></div>
+        <div class="money">
+          {{message.inAmount }} {{message.route.from.symbol}} -> {{message.outAmount }} {{message.route.to.symbol}}
+
+        </div>
+
+      </v-card-text>
+    </v-card>
+  </div>
 </template>
 
+
 <script>
+import "@/assets/style.css";
 export default {
   name: 'IndexPage',
   data() {
@@ -36,6 +89,16 @@ export default {
       var data = JSON.parse(event.data);
       //console.log(data.message);
       this.messages=data.message;
+      // sotr by status
+      this.messages.sort(function(a, b) {
+        if (a.status < b.status) {
+          return -1;
+        }
+        if (a.status > b.status) {
+          return 1;
+        }
+        return 0;
+      });
       console.log(this.messages);
 
 
