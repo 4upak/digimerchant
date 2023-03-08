@@ -44,7 +44,6 @@
           <img class="route_logo"  :src="'https://www.digichanger.pro/service/fs'+message.route.to.image.files[3].url" width="30" />
           {{ message.route.to.name}}
 
-          {{message.status}}
         </v-card-title>
       <v-card-text>
         <div class="status"></div>
