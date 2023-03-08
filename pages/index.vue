@@ -6,17 +6,10 @@
       <v-alert
         type="warning"
         :title="message.uid"
-        v-if="message.status=='waitPayment'"
+        v-if="message.status=='waitPayment' || message.status=='new'"
       >
         {{message.uid}} Ждем оплату
-      </v-alert>
-
-      <v-alert
-        type="info"
-        :title="message.uid"
-        v-if="message.status=='new'"
-      >
-        {{message.uid}} новая
+        <span v-if="message.status=='new'">[новая]</span>
       </v-alert>
 
       <v-alert
