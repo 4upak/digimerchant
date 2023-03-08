@@ -49,12 +49,23 @@
         <div class="status"></div>
         <div class="money">
           {{message.inAmount }} {{message.route.from.symbol}} -> {{message.outAmount }} {{message.route.to.symbol}}
-
+          <div class="client">
+            <div class="contacts" v-for="item in message.routeValues" v-if="item">
+              <span v-if="item.value !='' ">{{item.name}}: {{item.value}}</span>
+            </div>
+          </div>
         </div>
 
       </v-card-text>
     </v-card>
+
+    <div>
+      <audio ref="audioPlayer">
+        <source src="https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-77317/zapsplat_multimedia_button_click_fast_wooden_organic_005_78839.mp3" type="audio/mp3">
+      </audio>
+    </div>
   </div>
+  <!---->
 </template>
 
 
@@ -80,9 +91,9 @@ export default {
       //parse json
       var data = JSON.parse(event.data);
       //console.log(data.message);
-      this.messages=data.message;
+
       // sotr by status
-      this.messages.sort(function(a, b) {
+      data.message.sort(function(a, b) {
         if (a.status < b.status) {
           return -1;
         }
@@ -91,6 +102,15 @@ export default {
         }
         return 0;
       });
+      if (data.message.length != this.messages.length) {
+        console.log('new message');
+        this.$refs.audioPlayer.play();
+      }
+      //var audio = document.getElementById("myAudio");
+      //audio.play();
+
+      this.messages=data.message;
+
       console.log(this.messages);
 
 
@@ -105,5 +125,6 @@ export default {
       //console.log('WebSocket connection closed:', event);
     });
   },
+
 }
 </script>
